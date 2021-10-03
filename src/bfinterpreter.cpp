@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <stack>
+#include "bfinterpreter.h"
 
 std::vector<char> *readFile(const char *file){
 
@@ -11,7 +12,7 @@ std::vector<char> *readFile(const char *file){
     if (bfcode.is_open()){
 
         char mychar;
-        
+
         while (bfcode){
 
             mychar = bfcode.get();
@@ -55,10 +56,12 @@ void interpret(std::vector<char> *sourceCode){
             
             case '+':
                 ++(*ptr);
+                if ((*ptr) > 255) *ptr = 0;
                 break;
 
             case '-':
                 --(*ptr);
+                if ((*ptr) < 0) *ptr = 255;
                 break;
 
             case '.':
