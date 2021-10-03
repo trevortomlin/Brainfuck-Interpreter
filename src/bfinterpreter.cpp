@@ -3,11 +3,9 @@
 #include <string>
 #include <vector>
 
-std::vector<char>* readFile(const char *file){
+std::vector<char> *readFile(const char *file){
 
     std::ifstream bfcode(file);
-    std::string in;
-
     std::vector<char> *charVec = new std::vector<char>;
 
     if (bfcode.is_open()){
@@ -21,20 +19,60 @@ std::vector<char>* readFile(const char *file){
                 break;
 
             charVec->push_back(mychar);
-            //std::cout << mychar;
-        }       
+
+        }
+
+        bfcode.close();       
 
     }
-
-    bfcode.close();
 
     return charVec;
 
 }
 
-void interpret(const std::vector<char>* sourceCode){
+void interpret(std::vector<char> *sourceCode){
 
+    char array[30000] = {0};
+    char *ptr = array;
 
+    for (int i = 0; i < sourceCode->size(); i++){
+
+        switch((*sourceCode)[i]){
+
+            case '>':
+                ++ptr;
+                break;
+
+            case '<':
+                --ptr;
+                break;
+            
+            case '+':
+                ++*ptr;
+                break;
+
+            case '-':
+                --*ptr;
+                break;
+
+            case '.':
+                putchar(*ptr);
+                break;
+
+            case ',':
+                *ptr = getchar();
+                break;
+            
+            case '[':
+                break;
+
+            case ']':
+                break;            
+
+        }
+
+    }
+   
 
 }
 
@@ -53,6 +91,8 @@ int main(int argc, char *argv[]){
          std::cout << *i;
 
     }
+
+    interpret(sourceCode);
 
     delete sourceCode;
 
