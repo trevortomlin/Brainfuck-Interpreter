@@ -11,6 +11,7 @@ std::vector<char> *readFile(const char *file){
     if (bfcode.is_open()){
 
         char mychar;
+        
         while (bfcode){
 
             mychar = bfcode.get();
@@ -38,12 +39,11 @@ void interpret(std::vector<char> *sourceCode){
     std::stack<char> skiploop;
     std::stack<int> loopback;
 
-    for (int i = 0; i < sourceCode->size(); i++){
+    int ip = 0;
 
-        std::cout << int(*ptr);
+    while(ip < sourceCode->size()){
 
-        //std::cout << (*sourceCode)[i] << i;
-        switch((*sourceCode)[i]){
+        switch((*sourceCode)[ip]){
 
             case '>':
                 ++ptr;
@@ -58,7 +58,6 @@ void interpret(std::vector<char> *sourceCode){
                 break;
 
             case '-':
-                std::cout << "minus";
                 --(*ptr);
                 break;
 
@@ -79,23 +78,21 @@ void interpret(std::vector<char> *sourceCode){
 
                     while(!skiploop.empty()){
 
-                        ++i;
+                        ++ip;
 
-                        if ((*sourceCode)[i] == '[')
+                        if ((*sourceCode)[ip] == '[')
                             skiploop.push('[');
                         
-                        else if ((*sourceCode)[i] == ']')
+                        else if ((*sourceCode)[ip] == ']')
                             skiploop.pop();
 
                     }
-
-                    ++i;
 
                 }
 
                 else{
 
-                    loopback.push(i);
+                    loopback.push(ip);
 
                 }
 
@@ -105,7 +102,12 @@ void interpret(std::vector<char> *sourceCode){
 
                 if ((*ptr) != 0){
 
-                    i = loopback.top();
+                    ip = loopback.top();
+
+                }
+
+                else {
+
                     loopback.pop();
 
                 }
@@ -113,6 +115,8 @@ void interpret(std::vector<char> *sourceCode){
                 break;            
 
         }
+
+        ip++;
 
     }
    
